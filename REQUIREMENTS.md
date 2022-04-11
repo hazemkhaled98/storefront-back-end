@@ -5,31 +5,31 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Create [token required] '/products' [POST] [Provide name and price in the request body]
+- Create [token required] '/products' [POST]
 
 - Index '/products' [GET]
 
-- Show '/prdoucts/:id' [GET] [Provide porduct id in the url parameter]
+- Show '/prdoucts/:id' [GET] 
 
-- Update [token required] '/products' [PATCH] [Provide porduct id, name and price in the request body]
+- Update [token required] '/products' [PATCH] 
 
-- Delete [token required] '/products/:id' [DELETE] [Provide porduct id in the url parameter]
+- Delete [token required] '/products/:id' [DELETE] 
 
 #### Users
-- Create [token required] '/users' [POST] [Provide firstName lastName and password in the request body]
+- Create [token required] '/users' [POST] 
 
 - Index [token required] '/users' [GET]
 
-- Show [token required] '/users/:id' [GET] [Provide user id in the url parameter]
+- Show [token required] '/users/:id' [GET] 
 
-- Update [token required] '/users' [PATCH] [Provide id, firstName, lastName and password in the request body]
+- Update [token required] '/users' [PATCH] 
 
-- Delete [token required] '/users/:id' [DELETE] [Provide user id in the url parameter]
+- Delete [token required] '/users/:id' [DELETE] 
 
 #### Orders
-- Current Order by user (args: user id) [token required]  '/orders/active/:id' [GET] [Provide user id in the url parameter]
+- Current Order by user (args: user id) [token required]  '/orders/active/:id' [GET] 
 
-- Completed Orders by user (args: user id)[token required] '/orders/complete/:id' [GET] [Provide user id in the url parameter]
+- Completed Orders by user (args: user id)[token required] '/orders/complete/:id' [GET]
 
 ## Data Shapes
 #### Product
@@ -54,5 +54,5 @@ These are the notes from a meeting with the frontend developer that describe wha
 - schema --> (id SERIAL PRIMARY KEY, status VARCHAR(10), user_id BIGINT REFERENCES users(id));
 - schema (products_x_orders) --> (id SERIAL PRIMARY KEY, quantity INTEGER, product_id  bigint REFERENCES products(id), order_id bigint REFERENCES orders(id))
 
-- You can check the ERD image in the project folder for clearer understanding of tables relations
+- You can check the ERD image in the project folder for clearer understanding of database relations
 
