@@ -4,7 +4,20 @@
 
 - You need to run this project a postgres database on your local host and start the connection based on the information based to the pool instance from node-postgres package and they need to be consistent with the information present in "database.json" for database migration.
 
-- My ENV variables used to setup and start the project:
+# Create user:
+- CREATE USER store_admin WITH PASSWORD '157842369';
+
+# Create databases:
+- CREATE DATABASE store_db_dev;
+- CREATE DATABASE store_db_test;
+
+# Grant privileges
+- GRANT ALL PRIVILEGES ON DATABASE store_db_dev TO store_admin;
+- GRANT ALL PRIVILEGES ON DATABASE store_db_test TO store_admin;
+
+
+
+- My ENV variables used to setup and start the project (FOR REVWIENG PURPOSES BY UDACITY ):
 
 - PORT=3000
 
