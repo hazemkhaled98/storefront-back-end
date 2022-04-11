@@ -1,28 +1,18 @@
 import supertest from 'supertest';
-import { UserModel } from '../../models/user.model';
 import postgres from '../../database';
 import app from '../..';
 
 const request = supertest(app);
-const user = new UserModel();
 let token = '';
 
 describe('Testing CRUD endpoints of the productsHandler', () => {
 	beforeAll(async () => {
-		await user.create({
-			first_name: 'Eren',
-			last_name: 'Yeager',
+		const response = await request.post('/users').set('content-type', 'application/json').send({
+			firstName: 'Eren',
+			lastName: 'Yeager',
 			password: '112233'
 		});
-		const response = await request
-			.get('/authenticate')
-			.set('content-type', 'application/json')
-			.send({
-				firstName: 'Eren',
-				lastName: 'Yeager',
-				password: '112233'
-			});
-		token = response.body.data.token;
+		token = response.body.token;
 	});
 	it('Returns 200 OK when creating product via post request', async () => {
 		const response = await request

@@ -40,35 +40,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
-var user_model_1 = require("../../models/user.model");
 var database_1 = __importDefault(require("../../database"));
 var __1 = __importDefault(require("../.."));
 var request = (0, supertest_1.default)(__1.default);
-var user = new user_model_1.UserModel();
 var token = '';
 describe('Testing CRUD endpoints of the productsHandler', function () {
     beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, user.create({
-                        first_name: 'Eren',
-                        last_name: 'Yeager',
+                case 0: return [4 /*yield*/, request.post('/users').set('content-type', 'application/json').send({
+                        firstName: 'Eren',
+                        lastName: 'Yeager',
                         password: '112233'
                     })];
                 case 1:
-                    _a.sent();
-                    return [4 /*yield*/, request
-                            .get('/authenticate')
-                            .set('content-type', 'application/json')
-                            .send({
-                            firstName: 'Eren',
-                            lastName: 'Yeager',
-                            password: '112233'
-                        })];
-                case 2:
                     response = _a.sent();
-                    token = response.body.data.token;
+                    token = response.body.token;
                     return [2 /*return*/];
             }
         });

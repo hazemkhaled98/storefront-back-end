@@ -10,31 +10,6 @@ const user = new UserModel();
 
 const { TOKEN_SECRET } = process.env;
 
-const authenticate = async (req: express.Request, res: express.Response) => {
-	try {
-		const authenticateduser = await user.authenticate({
-			first_name: req.body.firstName,
-			last_name: req.body.lastName,
-			password: req.body.password
-		});
-		if (authenticateduser) {
-			const token = jwt.sign(authenticateduser, TOKEN_SECRET as unknown as string);
-			res.json({
-				status: 'Success',
-				data: { ...authenticateduser, token }
-			});
-		} else {
-			res.status(401).json({
-				status: 'Your info is invalid. Check and try again'
-			});
-		}
-	} catch (err) {
-		res.status(400).json({
-			status: 'failed to authenticate'
-		});
-	}
-};
-
 const create = async (req: express.Request, res: express.Response) => {
 	try {
 		const createdUser: User = await user.create({
@@ -42,7 +17,8 @@ const create = async (req: express.Request, res: express.Response) => {
 			last_name: req.body.lastName,
 			password: req.body.password
 		});
-		res.json(createdUser);
+		const token = jwt.sign(createdUser, TOKEN_SECRET as unknown as string);
+		res.json({ ...createdUser, token });
 	} catch (err) {
 		res.status(400).json(`Cannot create user ${req.body.name}`);
 	}
@@ -90,8 +66,7 @@ const deleteUser = async (req: express.Request, res: express.Response) => {
 };
 
 const usersHandler = (app: express.Application) => {
-	app.get('/authenticate', authenticate);
-	app.post('/users', authorize, create);
+	app.post('/users', create);
 	app.get('/users', authorize, index);
 	app.get('/users/:id', authorize, show);
 	app.patch('/users', authorize, update);

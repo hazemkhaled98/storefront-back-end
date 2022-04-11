@@ -39,25 +39,6 @@ describe('user Model functionality', () => {
 			last_name: 'Potter'
 		});
 	});
-	// test authenticate
-	it('authenticate method should verify user', async () => {
-		const result = await user.authenticate({
-			first_name: 'Harry',
-			last_name: 'Potter',
-			password: '505050'
-		});
-		expect(result).toEqual({
-			id: 1,
-			first_name: 'Harry',
-			last_name: 'Potter'
-		});
-		const fakeUser = await user.authenticate({
-			first_name: 'Harry',
-			last_name: 'Maguire',
-			password: '0000'
-		});
-		expect(fakeUser).toEqual(null);
-	});
 	//test index
 	it('index method should return a list of users', async () => {
 		const result = await user.index();

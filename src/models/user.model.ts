@@ -19,28 +19,6 @@ export type User = {
 };
 
 export class UserModel {
-	// authenticate user
-	async authenticate(user: User): Promise<User | null> {
-		try {
-			const conn = await postgres.connect();
-			const sql = 'SELECT password FROM users WHERE first_name=($1) AND last_name=($2)';
-			const res = await conn.query(sql, [user.first_name, user.last_name]);
-			if (res.rows.length) {
-				const { password: hashPassword } = res.rows[0];
-				const isValid = bcrypt.compareSync(`${user.password}${BCRYPT_PEPPER}`, hashPassword);
-				if (isValid) {
-					const sql = 'SELECT id, first_name, last_name FROM users WHERE password=($1)';
-					const res = await conn.query(sql, [hashPassword]);
-					conn.release();
-					return res.rows[0];
-				}
-			}
-			conn.release();
-			return null;
-		} catch (err) {
-			throw new Error(`Cannot authenticate user ${user}. ${err}`);
-		}
-	}
 	// create user
 	async create(user: User): Promise<User> {
 		try {

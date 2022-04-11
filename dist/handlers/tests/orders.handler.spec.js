@@ -39,48 +39,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var order_model_1 = require("../../models/order.model");
 var supertest_1 = __importDefault(require("supertest"));
 var __1 = __importDefault(require("../.."));
-var user_model_1 = require("../../models/user.model");
 var database_1 = __importDefault(require("../../database"));
 var request = (0, supertest_1.default)(__1.default);
-var order = new order_model_1.OrderModel();
-var user = new user_model_1.UserModel();
 var token = '';
 describe('Testing CRUD endpoints of the ordersHandler', function () {
     beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, conn, completedSql, activeSql;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, user.create({
-                        first_name: 'Eren',
-                        last_name: 'Yeager',
+                case 0: return [4 /*yield*/, request.post('/users').set('content-type', 'application/json').send({
+                        firstName: 'Eren',
+                        lastName: 'Yeager',
                         password: '112233'
                     })];
                 case 1:
-                    _a.sent();
-                    return [4 /*yield*/, request
-                            .get('/authenticate')
-                            .set('content-type', 'application/json')
-                            .send({
-                            firstName: 'Eren',
-                            lastName: 'Yeager',
-                            password: '112233'
-                        })];
-                case 2:
                     response = _a.sent();
-                    token = response.body.data.token;
+                    token = response.body.token;
                     return [4 /*yield*/, database_1.default.connect()];
-                case 3:
+                case 2:
                     conn = _a.sent();
                     completedSql = "INSERT INTO orders (status, user_id) VALUES ('complete', 1)";
                     activeSql = "INSERT INTO orders (status, user_id) VALUES ('active', 1)";
                     return [4 /*yield*/, conn.query(completedSql)];
-                case 4:
+                case 3:
                     _a.sent();
                     return [4 /*yield*/, conn.query(activeSql)];
-                case 5:
+                case 4:
                     _a.sent();
                     conn.release();
                     return [2 /*return*/];

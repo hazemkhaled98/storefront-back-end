@@ -1,28 +1,18 @@
 import supertest from 'supertest';
 import app from '../..';
-import { UserModel } from '../../models/user.model';
 import postgres from '../../database';
 
 const request = supertest(app);
-const user = new UserModel();
 let token = '';
 
 describe('Testing CRUD endpoints of the ordersHandler', () => {
 	beforeAll(async () => {
-		await user.create({
-			first_name: 'Eren',
-			last_name: 'Yeager',
+		const response = await request.post('/users').set('content-type', 'application/json').send({
+			firstName: 'Eren',
+			lastName: 'Yeager',
 			password: '112233'
 		});
-		const response = await request
-			.get('/authenticate')
-			.set('content-type', 'application/json')
-			.send({
-				firstName: 'Eren',
-				lastName: 'Yeager',
-				password: '112233'
-			});
-		token = response.body.data.token;
+		token = response.body.token;
 		const conn = await postgres.connect();
 		const completedSql = "INSERT INTO orders (status, user_id) VALUES ('complete', 1)";
 		const activeSql = "INSERT INTO orders (status, user_id) VALUES ('active', 1)";

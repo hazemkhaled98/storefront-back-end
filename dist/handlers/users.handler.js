@@ -57,44 +57,8 @@ var authorization_middleware_1 = __importDefault(require("../middleware/authoriz
 dotenv_1.default.config();
 var user = new user_model_1.UserModel();
 var TOKEN_SECRET = process.env.TOKEN_SECRET;
-var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var authenticateduser, token, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, user.authenticate({
-                        first_name: req.body.firstName,
-                        last_name: req.body.lastName,
-                        password: req.body.password
-                    })];
-            case 1:
-                authenticateduser = _a.sent();
-                if (authenticateduser) {
-                    token = jsonwebtoken_1.default.sign(authenticateduser, TOKEN_SECRET);
-                    res.json({
-                        status: 'Success',
-                        data: __assign(__assign({}, authenticateduser), { token: token })
-                    });
-                }
-                else {
-                    res.status(401).json({
-                        status: 'Your info is invalid. Check and try again'
-                    });
-                }
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                res.status(400).json({
-                    status: 'failed to authenticate'
-                });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var createdUser, err_2;
+    var createdUser, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -106,10 +70,11 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                     })];
             case 1:
                 createdUser = _a.sent();
-                res.json(createdUser);
+                token = jsonwebtoken_1.default.sign(createdUser, TOKEN_SECRET);
+                res.json(__assign(__assign({}, createdUser), { token: token }));
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
+                err_1 = _a.sent();
                 res.status(400).json("Cannot create user ".concat(req.body.name));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -117,7 +82,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, err_3;
+    var users, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -128,7 +93,7 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(users);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
+                err_2 = _a.sent();
                 res.status(400).json("Cannot fetch users.");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -136,7 +101,7 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var requiredUser, err_4;
+    var requiredUser, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -147,7 +112,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
                 res.json(requiredUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_4 = _a.sent();
+                err_3 = _a.sent();
                 res.status(404).json("Cannot fetch user ".concat(req.params.id));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -155,7 +120,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var updatedUser, err_5;
+    var updatedUser, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -171,7 +136,7 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(updatedUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_5 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400).json("Cannot update user ".concat(req.body.name));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -179,7 +144,7 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deletedUser, err_6;
+    var deletedUser, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -190,7 +155,7 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 res.json(deletedUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_6 = _a.sent();
+                err_5 = _a.sent();
                 res.status(404).json("Cannot delete user ".concat(req.params.id));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -198,8 +163,7 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 var usersHandler = function (app) {
-    app.get('/authenticate', authenticate);
-    app.post('/users', authorization_middleware_1.default, create);
+    app.post('/users', create);
     app.get('/users', authorization_middleware_1.default, index);
     app.get('/users/:id', authorization_middleware_1.default, show);
     app.patch('/users', authorization_middleware_1.default, update);

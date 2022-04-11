@@ -40,81 +40,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
-var user_model_1 = require("../../models/user.model");
 var database_1 = __importDefault(require("../../database"));
 var __1 = __importDefault(require("../.."));
 var request = (0, supertest_1.default)(__1.default);
-var user = new user_model_1.UserModel();
 var token = '';
 describe('Testing CRUD endpoints of the usersHandler', function () {
-    beforeAll(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, user.create({
-                        first_name: 'Eren',
-                        last_name: 'Yeager',
-                        password: '112233'
-                    })];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('Returns 200 OK if the user info is valid', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request
-                        .get('/authenticate')
-                        .set('content-type', 'application/json')
-                        .send({
-                        firstName: 'Eren',
-                        lastName: 'Yeager',
-                        password: '112233'
-                    })];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    token = response.body.data.token;
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('Returns 401 OK if the user info is invalid', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request
-                        .get('/authenticate')
-                        .set('content-type', 'application/json')
-                        .send({
-                        firstName: 'Eren',
-                        lastName: 'Yeager',
-                        password: '11111'
-                    })];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(401);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
     it('Returns 200 OK when creating user via post request', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request
-                        .post('/users')
-                        .set('content-type', 'application/json')
-                        .set('Authorization', "Bearer ".concat(token))
-                        .send({
+                case 0: return [4 /*yield*/, request.post('/users').set('content-type', 'application/json').send({
                         firstName: 'Mikasa',
                         lastName: 'Ackerman',
                         password: '445566'
                     })];
                 case 1:
                     response = _a.sent();
+                    token = response.body.token;
                     expect(response.status).toBe(200);
                     expect(response.body.first_name).toBe('Mikasa');
                     expect(response.body.last_name).toBe('Ackerman');
@@ -130,7 +72,7 @@ describe('Testing CRUD endpoints of the usersHandler', function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
-                    expect(response.body.length).toBe(2);
+                    expect(response.body.length).toBe(1);
                     return [2 /*return*/];
             }
         });
@@ -143,8 +85,8 @@ describe('Testing CRUD endpoints of the usersHandler', function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
-                    expect(response.body.first_name).toBe('Eren');
-                    expect(response.body.last_name).toBe('Yeager');
+                    expect(response.body.first_name).toBe('Mikasa');
+                    expect(response.body.last_name).toBe('Ackerman');
                     return [2 /*return*/];
             }
         });
@@ -158,7 +100,7 @@ describe('Testing CRUD endpoints of the usersHandler', function () {
                         .set('content-type', 'application/json')
                         .set('Authorization', "Bearer ".concat(token))
                         .send({
-                        id: 2,
+                        id: 1,
                         firstName: 'Levi',
                         lastName: 'Ackerman',
                         password: '448877'
@@ -166,7 +108,7 @@ describe('Testing CRUD endpoints of the usersHandler', function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
-                    expect(response.body.id).toBe(2);
+                    expect(response.body.id).toBe(1);
                     expect(response.body.first_name).toBe('Levi');
                     expect(response.body.last_name).toBe('Ackerman');
                     return [2 /*return*/];
@@ -178,7 +120,7 @@ describe('Testing CRUD endpoints of the usersHandler', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, request
-                        .delete('/users/2')
+                        .delete('/users/1')
                         .set('content-type', 'application/json')
                         .set('Authorization', "Bearer ".concat(token))];
                 case 1:

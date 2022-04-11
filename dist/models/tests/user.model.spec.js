@@ -81,35 +81,6 @@ describe('user Model functionality', function () {
             }
         });
     }); });
-    // test authenticate
-    it('authenticate method should verify user', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var result, fakeUser;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, user.authenticate({
-                        first_name: 'Harry',
-                        last_name: 'Potter',
-                        password: '505050'
-                    })];
-                case 1:
-                    result = _a.sent();
-                    expect(result).toEqual({
-                        id: 1,
-                        first_name: 'Harry',
-                        last_name: 'Potter'
-                    });
-                    return [4 /*yield*/, user.authenticate({
-                            first_name: 'Harry',
-                            last_name: 'Maguire',
-                            password: '0000'
-                        })];
-                case 2:
-                    fakeUser = _a.sent();
-                    expect(fakeUser).toEqual(null);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
     //test index
     it('index method should return a list of users', function () { return __awaiter(void 0, void 0, void 0, function () {
         var result;
