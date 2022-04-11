@@ -15,27 +15,6 @@
 - GRANT ALL PRIVILEGES ON DATABASE store_db TO developer;
 - GRANT ALL PRIVILEGES ON DATABASE store_db_test TO developer;
 
-
-
-- My ENV variables used to setup and start the project (FOR REVWIENG PURPOSES BY UDACITY ):
-
-- PORT=3000
-
-- NODE_ENV=dev
-- POSTGRES_HOST=127.0.0.1
-- POSTGRES_PORT=5432
-- POSTGRES_DB=store_db_dev
-- POSTGRES_DB_TEST=store_db_test
-- POSTGRES_USER=store_admin
-- POSTGRES_PASS=157842369
-
-- BCRYPT_PEPPER=saulgoodman
-- BCRYPT_SALT=10
-
-- TOKEN_SECRET=mikasa
-
-- Please note that the database runs on port 5432 but the application itself runs on port 3000
-
 - To initialize run "npm --init" and then you can use a script using "npm run {test or start}" to test and start the project respectively.
 
 
